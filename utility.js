@@ -43,10 +43,10 @@ const fromObject = /*:: <T>*/(value/*: mixed*/, toValue/*: (prop: <X>(name: stri
 };
 
 const castObject = /*:: <T>*/ (
-  toValue: (
+  toValue/*: (
     prop: <X>(name: string, toValue: mixed => X) => X,
     object: { +[string]: mixed },
-  ) => T
+  ) => T*/,
 )/*: Cast<T>*/ => (value) => {
   const object = toObject(value);
   const prop = /*:: <X>*/(name/*: string*/, toValue/*: mixed => X*/)/*: X*/ => {
