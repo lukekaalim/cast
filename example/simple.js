@@ -1,6 +1,6 @@
 // @flow strict
 /*:: import type { Cast } from '@lukekaalim/cast'; */
-const { toObject, toBoolean, toArray, toString, toEnum, toNumber } = require('@lukekaalim/cast');
+const { toObject, toBoolean, toArray, toString, toEnum, toNumber, fromProp, fromObject, castObject } = require('@lukekaalim/cast');
 
 /*::
 type ExampleUser = {
@@ -10,12 +10,28 @@ type ExampleUser = {
   location: 'australia' | 'new-zealand' | 'tasmania',
   middleNames: string[],
 }
+
+type Profile = {
+  user: ExampleUser,
+}
 */
+
+const toExampleUser/*: Cast<ExampleUser>*/ = castObject(prop => ({
+  name: prop('name', toString),
+  id: prop('id', toNumber),
+  isAdmin: prop('isAdmin', toBoolean),
+  location: 'australia',
+  middleNames: [],
+}));
+
+const toProfile/*: Cast<Profile>*/ = castObject(prop => ({
+  user: prop('user', toExampleUser)
+}));
 
 const createExampleUser/*: Cast<ExampleUser>*/ = (value) => {
   const object = toObject(value);
   return {
-    name: toString(object.name),
+    name: fromProp(object, 'name', toString),
     id: toNumber(object.id),
     isAdmin: toBoolean(object.isAdmin),
     location: toEnum(object.location, [('australia'/*: 'australia'*/), ('new-zealand'/*: 'new-zealand'*/), ('tasmania'/*: 'tasmania'*/)]),
