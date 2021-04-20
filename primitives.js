@@ -32,8 +32,13 @@ const toBoolean = (value/*: mixed*/)/*: boolean*/ => {
 
 module.exports = {
   toObject,
+  object: toObject,
   toArray,
-  toString,
+  array: toArray,
+  _toString: toString,
+  string: toString,
   toNumber,
+  number: toNumber,
   toBoolean,
+  boolean: toBoolean
 }
