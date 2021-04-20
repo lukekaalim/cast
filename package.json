@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/lukekaalim/cast/issues"
   },
-  "homepage": "https://github.com/lukekaalim/cast#readme"
+  "homepage": "https://github.com/lukekaalim/cast#readme",
+  "devDependencies": {
+    "flow-bin": "^0.149.0"
+  }
 }
