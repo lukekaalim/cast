@@ -35,7 +35,7 @@ module.exports = {
   object: toObject,
   toArray,
   array: toArray,
-  _toString: toString,
+  toString,
   string: toString,
   toNumber,
   number: toNumber,
