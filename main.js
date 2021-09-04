@@ -10,9 +10,9 @@ export type Cast<T> = (value: mixed) => T;
 export type Equal<T> = (a: T, b: T) => boolean;
 */
 
-module.exports = {
-  ...require('./json'),
-  ...require('./utility'),
-  ...require('./primitives'),
-  ...require('./complex'),
-}
+export * from './json.js';
+export * from './utility.js';
+export * from './primitives.js';
+export * from './complex.js';
+export * from './union.js';
+export * from './constant.js';

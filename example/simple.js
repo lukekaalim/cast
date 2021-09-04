@@ -1,50 +1,73 @@
 // @flow strict
-/*:: import type { Cast } from '@lukekaalim/cast'; */
-const { toObject, toBoolean, toArray, string, toEnum, toNumber, fromProp, fromObject, castObject } = require('@lukekaalim/cast');
+/*::
+import type { Cast } from '@lukekaalim/cast';
+*/
+import {
+  createObjectCaster, createArrayCaster, castConstant,
+  castString, createConstantUnionCaster, createKeyedUnionCaster,
+  createConstantCaster,
+  castNumber
+} from "@lukekaalim/cast";
+
 
 /*::
-type ExampleUser = {
+type Cat = {
+  type: 'cat',
   name: string,
-  id: number,
-  isAdmin: boolean,
-  location: 'australia' | 'new-zealand' | 'tasmania',
-  middleNames: string[],
+  age: number,
+  fur: 'brown' | 'cream' | 'dark'
 }
-
-type Profile = {
-  user: ExampleUser,
+type Lizard = {
+  type: 'lizard',
+  name: string,
+  age: number,
+  scales: 'green' | 'red'
 }
-*/
+type Pet =
+  | Cat
+  | Lizard
 
-const toExampleUser/*: Cast<ExampleUser>*/ = castObject(prop => ({
-  name: prop('name', string),
-  id: prop('id', toNumber),
-  isAdmin: prop('isAdmin', toBoolean),
-  location: 'australia',
-  middleNames: [],
-}));
-
-const toProfile/*: Cast<Profile>*/ = castObject(prop => ({
-  user: prop('user', toExampleUser)
-}));
-
-const createExampleUser/*: Cast<ExampleUser>*/ = (value) => {
-  const object = toObject(value);
-  return {
-    name: fromProp(object, 'name', string),
-    id: toNumber(object.id),
-    isAdmin: toBoolean(object.isAdmin),
-    location: toEnum(object.location, ['australia']),
-    middleNames: toArray(object.middleNames).map(string),
-  }
+type PetStore = {
+  pets: Pet[],
 };
+*/
+const catTypeCaster = createConstantCaster('cat');
+const castFur = createConstantUnionCaster(['brown', 'cream', 'dark']);
 
-const lukeUser = createExampleUser({
-  name: 'luke',
-  id: 1,
-  isAdmin: true,
-  location: 'australia',
-  middleNames: ['martin', 'anthony'],
+const castCat/*: Cast<Cat>*/ = createObjectCaster(prop => ({
+  type: prop('type', catTypeCaster),
+  name: prop('name', castString),
+  fur: prop('fur', castFur),
+  age: prop('age', castNumber)
+}))
+
+const castPet/*: Cast<Pet>*/ = createKeyedUnionCaster('type', {
+  'cat': castCat,
+  'lizard': () => { throw new Error(`NO LAZARD`); },
 });
 
-console.log(lukeUser);
+const castPets/*: Cast<$ReadOnlyArray<Pet>>*/ = createArrayCaster(castPet);
+
+try {
+  const pets = castPets([
+    {
+      type: 'cat',
+      name: 'lucas',
+      fur: 'cream',
+      age: 1
+    },
+    {
+      type: 'cat',
+      name: 'geores',
+      fur: 'brown',
+      age: 1
+    },
+    {
+      type: null
+    }
+  ]);
+  
+  console.log(pets);
+} catch (error) {
+  console.log('Error:', error.message);
+}
