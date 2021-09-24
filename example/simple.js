@@ -34,12 +34,12 @@ type PetStore = {
 const catTypeCaster = createConstantCaster('cat');
 const castFur = createConstantUnionCaster(['brown', 'cream', 'dark']);
 
-const castCat/*: Cast<Cat>*/ = createObjectCaster(prop => ({
-  type: prop('type', catTypeCaster),
-  name: prop('name', castString),
-  fur: prop('fur', castFur),
-  age: prop('age', castNumber)
-}))
+const castCat/*: Cast<Cat>*/ = createObjectCaster({
+  type: catTypeCaster,
+  name: castString,
+  fur: castFur,
+  age: castNumber,
+});
 
 const castPet/*: Cast<Pet>*/ = createKeyedUnionCaster('type', {
   'cat': castCat,
@@ -63,11 +63,12 @@ try {
       age: 1
     },
     {
-      type: null
-    }
+      type: 'lizard'
+    },
   ]);
   
   console.log(pets);
 } catch (error) {
   console.log('Error:', error.message);
+  console.error(error);
 }

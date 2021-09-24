@@ -59,19 +59,22 @@ class InvalidPropError extends InvalidCastError {
   }
 }
 
-export const createObjectCaster = /*:: <T>*/ (
-  toValue/*: (
-    prop: <X>(name: string, toValue: mixed => X) => X,
-    object: { +[string]: mixed },
-  ) => T*/,
-)/*: Cast<T>*/ => (value) => {
-  const object = castObject(value);
-  const prop = /*:: <X>*/(name/*: string*/, toValue/*: mixed => X*/)/*: X*/ => {
+export const createObjectCaster = /*:: <T: {}>*/ (
+  props/*: $ObjMap<T, <X>(X) => Cast<X>> */
+)/*: Cast<T>*/ => {
+  const propCasters = Object.entries(props);
+
+  const castForProp = (name, caster, value) => {
     try {
-      return toValue(object[name])
+      return (caster/*: any*/)(value)
     } catch (error) {
       throw new InvalidPropError(name, error);
     }
   }
-  return toValue(prop, object);
+  const castObjectProps = (value)/*: any*/ => {
+    const objectValue = castObject(value);
+    const valueProps = propCasters.map(([name, caster]) => [name, castForProp(name, caster, objectValue[name])])
+    return Object.fromEntries(valueProps);
+  };
+  return castObjectProps;
 };

@@ -9,11 +9,10 @@ type Node = {
 };
 */
 
-const castNode/*: Cast<Node>*/ = createObjectCaster(prop => ({
-  name: prop('name', castString),
-  children: prop('children', castChildren),
-}));
-
+const castNode/*: Cast<Node>*/ = createObjectCaster({
+  name: castString,
+  children: v => castChildren(v)
+});
 const castChildren = createArrayCaster(castNode);
 
 try {
@@ -33,6 +32,7 @@ try {
   console.log(root);
 } catch (error) {
   console.log(error.message);
+  console.error(error);
 }
 
 
