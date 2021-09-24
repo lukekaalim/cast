@@ -4,14 +4,13 @@ import { castArray, castObject, InvalidTypeError } from './primitives.js';
 import { castEnum, InvalidEnumError } from './utility.js';
 import { InvalidCastError } from './error.js';
 
-export const createTupleCaster = /*:: <A, B>*/(
-  toA/*: Cast<A>*/,
-  toB/*: Cast<B>*/
-)/*: Cast<[A, B]>*/ => {
+
+export const createTupleCaster = /*:: <A: any>*/(
+  elements/*: A*/
+)/*: Cast<$TupleMap<A, <X>(a: Cast<X>) => X>>*/ => {
   const tupleCaster = (value) => {
     const array = castArray(value);
-    const [tupleA, tupleB] = array;
-    return [toA(tupleA), toB(tupleB)];
+    return array.map((v, i) => elements[i](v));
   }
   return tupleCaster;
 };
