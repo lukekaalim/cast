@@ -1,6 +1,6 @@
 {
   "name": "@lukekaalim/cast",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Lightweight flow-type casting utility functions",
   "main": "main.js",
   "type": "module",
