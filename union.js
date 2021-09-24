@@ -36,8 +36,7 @@ export const createKeyedUnionCaster = /*:: <T>*/(
 )/*: Cast<T>*/ => {
   const getCaster = (value) => {
     try {
-      const valueObject = castObject(value);
-      const key = castString(valueObject[keyName]);
+      const key = castString(value[keyName]);
       const caster = info[key];
       if (!caster)
         throw new Error();
@@ -48,7 +47,8 @@ export const createKeyedUnionCaster = /*:: <T>*/(
   };
 
   const keyedUnionCaster = (value) => {
-    const caster = getCaster(value);
+    const valueObject = castObject(value);
+    const caster = getCaster(valueObject);
     return caster(value);
   };
   return keyedUnionCaster;
