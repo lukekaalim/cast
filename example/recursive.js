@@ -1,6 +1,6 @@
 // @flow strict
 /*:: import type { Cast } from '@lukekaalim/cast'; */
-import { createObjectCaster, createArrayCaster, castString } from '@lukekaalim/cast';
+import { createObjectCaster, createArrayCaster, castString, castNumber } from '@lukekaalim/cast';
 
 /*::
 type Node = {

@@ -60,9 +60,9 @@ class InvalidPropError extends InvalidCastError {
 }
 
 export const createObjectCaster = /*:: <T: {}>*/ (
-  props/*: $ObjMap<T, <X>(X) => Cast<X>> */
-)/*: Cast<T>*/ => {
-  const propCasters = Object.entries(props);
+  props/*: T */
+)/*: Cast<$ObjMap<T, <P>(i: Cast<P>) => P>>*/ => {
+  const propCasters = Object.entries((props/*: any*/));
 
   const castForProp = (name, caster, value) => {
     try {
