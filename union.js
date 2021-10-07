@@ -30,13 +30,16 @@ export type KeyedUnionInfo<T> = {
 };
 */
 
-export const createKeyedUnionCaster = /*:: <T>*/(
+export const createKeyedUnionCaster = /*:: <T: { [string]: Cast<any> }>*/(
   keyName/*: string*/,
-  info/*: KeyedUnionInfo<T>*/
-)/*: Cast<T>*/ => {
-  const getCaster = (value) => {
+  info/*: T*/
+)/*: Cast<$Values<$ObjMap<T, <V>(v: Cast<V>) => V>>>*/ => {
+  const getKey = (value) => {
+    const key = castString(value[keyName]);
+    return key;
+  };
+  const getCaster = (key, value) => {
     try {
-      const key = castString(value[keyName]);
       const caster = info[key];
       if (!caster)
         throw new Error();
@@ -48,8 +51,9 @@ export const createKeyedUnionCaster = /*:: <T>*/(
 
   const keyedUnionCaster = (value) => {
     const valueObject = castObject(value);
-    const caster = getCaster(valueObject);
-    return caster(value);
+    const key = getKey(valueObject);
+    const caster = getCaster(key, valueObject);
+    return { ...caster(value), [keyName]: key };
   };
   return keyedUnionCaster;
 };
