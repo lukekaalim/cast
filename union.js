@@ -84,12 +84,12 @@ export const createConstantUnionCaster = /*:: <T>*/(
 
 export const createNullableCaster = /*::<T>*/(
   caster/*: Cast<T>*/
-)/*: Cast<?T>*/ => {
+)/*: Cast<null | T>*/ => {
   const nullableCaster = (value) => {
     if (value === null)
       return null;
     if (value === undefined)
-      return undefined;
+      return null;
     return caster(value);
   };
   return nullableCaster;
