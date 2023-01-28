@@ -4,6 +4,7 @@
   "description": "Lightweight flow-type casting utility functions",
   "main": "main.js",
   "type": "module",
+  "types": "index.d.ts",
   "author": "Luke Kaalim",
   "license": "MIT",
   "scripts": {
