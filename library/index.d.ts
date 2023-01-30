@@ -11,6 +11,11 @@ export const c: {
   num: Cast<number>,
 
   maybe: <T>(caster: Cast<T>) => Cast<null | T>,
-  enums: <T>(values: T) => Cast<T[keyof T]>,
-  or: <T extends { [k: string]: Cast<any> }>(keyName: string, info: T) => Cast<{ [Prop in keyof T]: ReturnType<T[Prop]> }[keyof T]>,
+  enums: <T extends string>(values: T[]) => Cast<T>,
+
+  or: <T extends { [k: string]: Cast<unknown> }>(keyName: string, values: T) => Cast<ReturnType<T[keyof T]>>,
+}
+
+export namespace Utils {
+  export type CastMap<T> = { [k: string]: Cast<T> }
 }

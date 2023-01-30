@@ -1,4 +1,4 @@
-import { c } from '@lukekaalim/cast';
+import { c, Utils } from '@lukekaalim/cast';
 
 const b = c.lit('cat')
 
@@ -17,10 +17,21 @@ const m = l('anything');
 
 m[0]
 
-const f = c.or('keything', {
+type Switchy =
+  | { type: 'one', beta: number }
+  | { type: 'two', gamme: number }
+
+const f = c.or<Utils.CastMap<Switchy>>('keything', {
   lego: c.obj({ type: c.lit('one'), beta: c.num }),
-  orange: c.obj({ type: c.lit('two'), gamme: c.num })
+  orange: c.obj({ type: c.lit('two'), gamme: c.lit(10) })
 })
 
 const g = f('moo')
+if (g.type === 'one')
+  g.beta;
 
+type Greets = 'hello' | 'world';
+
+const en = c.enums<Greets>(['hello', 'world']);
+const ena = en('what')
+ena[0];
