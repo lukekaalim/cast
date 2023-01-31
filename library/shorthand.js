@@ -2,7 +2,7 @@
 import { createConstantCaster } from './constant.js';
 import { createObjectCaster, createTupleCaster, createArrayCaster } from './complex.js';
 import { castString, castBoolean, castNumber } from './primitives.js';
-import { createNullableCaster, createConstantUnionCaster, createKeyedUnionCaster } from './union.js';
+import { createNullableCaster, createConstantUnionCaster, createKeyedUnionCaster, createLinearUnionCaster } from './union.js';
 
 export const c = {
   lit: createConstantCaster,
@@ -16,4 +16,5 @@ export const c = {
   maybe: createNullableCaster,
   enums: createConstantUnionCaster,
   or: createKeyedUnionCaster,
+  any: createLinearUnionCaster,
 };

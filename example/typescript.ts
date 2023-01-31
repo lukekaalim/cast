@@ -35,3 +35,6 @@ type Greets = 'hello' | 'world';
 const en = c.enums<Greets>(['hello', 'world']);
 const ena = en('what')
 ena[0];
+
+const h = c.any<'hello' | 'world' | boolean>([c.lit('hello'), c.lit('world'), c.bool]);
+const ha = h('dsg')

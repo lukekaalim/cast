@@ -14,6 +14,7 @@ export const c: {
   enums: <T extends string>(values: T[]) => Cast<T>,
 
   or: <T extends { [k: string]: Cast<unknown> }>(keyName: string, values: T) => Cast<ReturnType<T[keyof T]>>,
+  any: <T>(casters: Cast<T>[]) => Cast<T>,
 }
 
 export namespace Utils {

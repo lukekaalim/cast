@@ -94,3 +94,21 @@ export const createNullableCaster = /*::<T>*/(
   };
   return nullableCaster;
 }
+
+export const createLinearUnionCaster = /*:: <T>*/(
+  casters/*: Cast<T>[]*/,
+)/*: Cast<T>*/ => {
+  const caster = (value) => {
+    for (const cast of casters) {
+      try {
+        return cast(value)
+      } catch (error) {}
+    }
+    throw new InvalidCastError(
+      JSON.stringify(value) || 'value',
+      'one of union',
+      `none of the union casters returned without throwing an error`
+    );
+  }
+  return caster;
+};
